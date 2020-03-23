@@ -1,0 +1,160 @@
+/*
+
+Copyright (C) 2019, 2020 Evgeny "mrf" Chernykh
+This file is part of neutr_cube project.
+
+neutr_cube is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+neutr_cube is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+neutr_cube. If not, see <http://www.gnu.org/licenses/>.
+
+
+ * main.c
+ *
+ *  Created on: 7 nov. 2018 г.
+ *      Author: mrf
+ *      Hi! <deleted stupid text was here>
+ *
+ */
+
+
+// PA00  ADC0           osc1 shape
+// PA01  ADC1           osc2 shape
+// PA02  ADC2           lfo shape
+// PA03  ADC3           lfo freq
+// PA04  DAC1           8 CV
+// PA05  DAC2           LFO
+// PA06  ADC6           GLIDE
+// PA07  GPIO OUT       osc1 enable cv mod
+// PA08  TIM CAP        osc1 tune timer
+// PA09  USART1_TX      MIDI OUT
+// PA10  USART1_RX      MIDI IN
+// PA11  USB_DM
+// PA12  USB_DP
+// PA13  SWDIO
+// PA14  SWCLK
+// PA15  GPIO OUT       165 latch
+
+// PB00  GPIO OUT       output enable
+// PB01  GPIO OUT       osc2 sync disable
+// PB02  GPIO IN        LFO trig
+// PB03  SPI1           165 clk
+// PB04  SPI1           165 miso
+// PB05  GPIO OUT       osc1 wavesel0
+// PB06  GPIO OUT       osc1 wavesel1
+// PB07  GPIO OUT       osc2 wavesel0
+// PB08  GPIO OUT       osc2 wavesel1
+// PB09  TIM            osc2 tune timer
+// PB10  SPI2           595 clk
+// PB11  GPIO OUT       cv mult sel2
+// PB12  GPIO OUT       595 latch
+// PB13  GPIO OUT       cv mult sel0
+// PB14  GPIO OUT       cv mult sel1
+// PB15  SPI2           595 mosi
+
+// PC13  GPIO OUT       gate out
+// PC14  GPIO OUT       cv mult _en
+// PC15  GPIO OUT       osc2 enable cv mod
+
+
+
+
+//ADC   - pots    - DMA CH 1
+//SPI1  - RX      - DMA ch 2
+//SPI2  - TX      - DMA ch 5
+//TIM1  - o1 freq - DMA ch 6
+//TIM17 - o2 freq - DMA ch 7
+//TIM6  - LFO SR
+//TIM2  - Filter tune
+
+
+//ints:
+//TIM6 - SR
+//TIM7 - CR
+//UART1 - MIDI
+//USB  - MIDI
+
+
+
+//core 48 000 000
+//sr LFO          46875       1024
+//cr freq         2929.6875  16384
+
+
+//dac:
+//osc 1 pitch
+//osc 2 pitch
+//osc 1 octave?
+//osc 2 octave?
+//osc 1 shape
+//osc 2 shape
+//filter
+//assign
+
+LED_FILTERKEYTRACK - 
+LED_LFO5RAMPUP     - 
+LED_LFO4SQUARE     - 
+LED_LFO3RAMPDWN    - 
+LED_LFO2TRIANGLE   - 
+LED_LFO1SINE       - 
+LEDBTN_LFOSYNC     - 
+LED_FILTERLP       - 
+LED_FILTERHP       - 
+LED_FILTERBP       - 
+LEDBTN_OSC2RANGE   - 
+LEDBTN_OSC1RANGE   - 
+LEDBTN_PARAPHONIC  - 
+LEDBTN_OSCSYNC     - 
+LED_OSC2_32        - 
+LED_OSC2_16        - 
+LED_OSC2_8         - 
+LED_OSC1_32        - 
+LED_OSC1_16        - 
+LED_OSC1_8         - 
+OSC2_FULLRANGE     - 
+OSC1_FULLRANGE     - 
+FILTERMODE_1       - 
+FILTERMODE_2       - 
+
+
+
+                 - 1 classic       - 2 monophonic    - 3 supersaw      - 4 polyphonic    -
+rate pot         -   rate          - offset          - detune          - attack/release  -
+wave pot         -   wave          - wave            - voices/oscs     - wave            -
+button           -   keysync       -                 - no              - at-rel/release  -
+midisync         -   yes           - if small freq   - no              - no              -
+midinotes,sustain-   no            - noteon only     - noteon only     - full            -
+extsync          -   reset phase   - audio aa sync   - no              - no              -
+butled           -   keysync       -                 - off             - at-rel/rel      -
+waveleds         -   wavepos       - wavepos         - off             - voices          -
+
+
+tuning constants:
+         cf        oct       off
+o1      0xA44C    0x8A7F    0x5C4C 
+o2      0xA3CC    0x8AFF    0x40CC
+flt     0x85CC                
+as      0x10998             0x017F
+
+todo:
+-LFO MODE 3 WIDE RANGE - лучше добавь в моде 1 сочетание с кейтреком, заодно можно увеличить таблицу вниз. типа без кт = +48 с кт = + осц2питч
+-DAC dthr
+-flt ktr -12 or even 24
+-USB at last???
+-try D one more time (AC coupled?)
+- MORE TEST AND DEBUG
+
+
+
+-add midi bpm flashing
+-add flash save without erase - one or few pages.
+-usb
+-save flash stalls cpu. need usart reinitialization and some usb work - FIXED! CHECK IN DEBUG
+

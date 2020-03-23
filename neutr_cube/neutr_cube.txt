@@ -1,0 +1,99 @@
+Configuration	neutr_cube
+STM32CubeMX 	4.27.0
+Date	11/28/2018
+MCU	STM32F072CBTx
+
+
+
+PERIPHERALS	MODES	FUNCTIONS	PINS
+ADC	IN0	ADC_IN0	PA0
+ADC	IN1	ADC_IN1	PA1
+ADC	IN2	ADC_IN2	PA2
+ADC	IN3	ADC_IN3	PA3
+ADC	IN6	ADC_IN6	PA6
+DAC	DAC_OUT1	DAC_OUT1	PA4
+DAC	DAC_OUT2	DAC_OUT2	PA5
+RCC	Crystal/Ceramic Resonator	RCC_OSC_IN	PF0-OSC_IN
+RCC	Crystal/Ceramic Resonator	RCC_OSC_OUT	PF1-OSC_OUT
+SPI1	Receive Only Master	SPI1_MISO	PB4
+SPI1	Receive Only Master	SPI1_SCK	PB3
+SPI2	Transmit Only Master	SPI2_MOSI	PB15
+SPI2	Transmit Only Master	SPI2_SCK	PB10
+SYS	Serial_Wire	SYS_SWCLK	PA14
+SYS	Serial_Wire	SYS_SWDIO	PA13
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+TIM1	Input Capture direct mode	TIM1_CH1	PA8
+TIM17	Enable_Timer	TIM17_VS_ClockSourceINT	VP_TIM17_VS_ClockSourceINT
+TIM17	Input Capture direct mode	TIM17_CH1	PB9
+USART1	Asynchronous	USART1_RX	PA10
+USART1	Asynchronous	USART1_TX	PA9
+USB	Device (FS)	USB_DM	PA11
+USB	Device (FS)	USB_DP	PA12
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+2	PC13	GPIO_Output	GATE_OUT
+3	PC14-OSC32_IN	GPIO_Output	DACM_EN
+4	PC15-OSC32_OUT	GPIO_Output	OSC2_MODEN
+5	PF0-OSC_IN	RCC_OSC_IN	
+6	PF1-OSC_OUT	RCC_OSC_OUT	
+10	PA0	ADC_IN0	ADC_SHAPE1
+11	PA1	ADC_IN1	ADC_SHAPE2
+12	PA2	ADC_IN2	ADC_LFOSHAPE
+13	PA3	ADC_IN3	ADC_LFOFREQ
+14	PA4	DAC_OUT1	DAC_M
+15	PA5	DAC_OUT2	DAC_LFO
+16	PA6	ADC_IN6	ADC_GLIDE
+17	PA7	GPIO_Output	OSC1_MODEN
+18	PB0	GPIO_Output	OUTPUT_EN
+19	PB1	GPIO_Output	OSCSUNC_DIS
+20	PB2	GPIO_Input	LFOTRIG_IN
+21	PB10	SPI2_SCK	OUT595_CLK
+22	PB11	GPIO_Output	DACM_SEL2
+25	PB12	GPIO_Output	OUT595_LATCH
+26	PB13	GPIO_Output	DACM_SEL0
+27	PB14	GPIO_Output	DACM_SEL1
+28	PB15	SPI2_MOSI	OUT595_MOSI
+29	PA8	TIM1_CH1	OSC1TUNE_IN
+30	PA9	USART1_TX	
+31	PA10	USART1_RX	
+32	PA11	USB_DM	
+33	PA12	USB_DP	
+34	PA13	SYS_SWDIO	
+37	PA14	SYS_SWCLK	
+38	PA15	GPIO_Output	IN165_LATCH
+39	PB3	SPI1_SCK	IN165_CLK
+40	PB4	SPI1_MISO	IN165_MISO
+41	PB5	GPIO_Output	OSC1WFSEL0
+42	PB6	GPIO_Output	OSC1WFSEL1
+43	PB7	GPIO_Output	OSC2WFSEL0
+45	PB8	GPIO_Output	OSC2WFSEL1
+46	PB9	TIM17_CH1	OSC2TUNE_IN
+
+
+
+SOFTWARE PROJECT
+
+Project Settings : 
+Project Name : neutr_cube
+Project Folder : C:\v\neutron_proj_ac6\neutr_cube
+Toolchain / IDE : SW4STM32
+Firmware Package Name and Version : STM32Cube FW_F0 V1.9.0
+
+
+Code Generation Settings : 
+STM32Cube Firmware Library Package : Copy only the necessary library files
+Generate peripheral initialization as a pair of '.c/.h' files per peripheral : No
+Backup previously generated files when re-generating : No
+Delete previously generated files when not re-generated : Yes
+Set all free pins as analog (to optimize the power consumption) : No
+
+
+Toolchains Settings : 
+Compiler Optimizations : 
+
+
+
+
+

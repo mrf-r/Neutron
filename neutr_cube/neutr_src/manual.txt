@@ -1,0 +1,141 @@
+
+Copyright (C) 2019, 2020 Evgeny "mrf" Chernykh
+This file is part of neutr_cube project.
+
+neutr_cube is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+neutr_cube is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+neutr_cube. If not, see <http://www.gnu.org/licenses/>.
+
+If you want install firmware from Linux or other OS, see PREENFM2 dfu manual.
+This manual is for installation from Windows OS using STM DfuSe Utility. You can download it from the official ST webpage.
+Installation is completely safe. It is made through internal STM USB bootloader, that can not be erased or corrupted with wrong steps. However don't wait for any support, if you made something wrong.
+There are 2 types of incompatible bootloader drivers - Zadig, that is used by Behringer and ST, that is used by DfuSe.
+To switch to ST drivers, connect Neutron in bootloader mode, go to Devices panel, find STM32 BOOTLOADER and delete it with files, then reconnect Neutron and Windows installs ST drivers automatically. Or you can manually install ST driver from DfuSe folder.
+Run Dfuse, check, that STM Device in DFU Mode present in Available DFU Devices
+If you want to save current firmware before experimenting, press "Choose" button in "Upload Action" block and select new file name and location, then press Upload to fill that file with dump. Now you got firmware dump, that you can upload back anytime.
+In "Upgrade or Verify" block select firmware that you want to load by pressing "Choose". Press "Upgrade". Reboot Neutron after completion.
+If you install this firmware with DfuSe, than you need to retune. DfuSe erases all memory with the previous calibration.
+
+RETURNING TO ORIGINAL STATE:
+You can return by using dump file and DfuSe or by using Behringer updater utility. 
+To switch to Zadig just use firmware update manual from Behringer.
+After returning to original Behringer firmware through Updater utility you need to recalibrate pots:
+on 1.x firmwares power on holding “OSC SYNC” + “PARAPHONIC” + “KEY TRK”
+on 2.x firmwares it starts automatically
+Calibration mode indicates by LFO LEDs pulsating pattern.
+Disconnect all patches from the panel and Turn:
+OSC1 SHAPE pot fully to LEFT
+OSC2 SHAPE pot fully to RIGHT
+LFO SHAPE pot fully to RIGHT
+LFO RATE pot fully to RIGHT
+PORTA TIME pot fully to RIGHT
+When this is done press VCF “MODE” + LFO “KEY SYNC” simultaneously.
+Neutron will restart. And you will get the same Neutron as it was before.
+
+OPERATION:
+When you press any button, all available key combinations are flashed.
+for PANIC use PARAPHONIC + FLT_KEYTRACK
+LFO_RATE and LFO_SHAPE knobs are multi-functional, but lfo rate and shape keep unchanged while tweaking sub-parameters. Sometimes it needed to turn it back to value to switch back to normal mode. It is done to prevent parameters jump.
+
+If you want to tune your Neutron properly, please remember that it is better to do it at least 30 min after power on. All environment changes may affect tuning. There are automatic tuning procedures for individual oscs, however if you want some experimenting, or enjoy old school techniques, or think that you capable of measuring frequencies better than 64bit floating point code, there are manual tuning available.
+This firmware does not mute output in any circumstances, so you can hear autotuning process. 
+Keep in ming, that there are 2 dacs for each oscillator, so 4 dacs for 2 oscs total.
+- One dac is for octave switching and absolute pitch offset.
+- Second is for midi notes, glide and pitchbend.
+There are also two trim pots on the back of the PCB in the oscillator section, that controls V/Oct scale of cv inputs. They must be tuned to 1.000V/oct, by connecting a calibrated voltage source to OSC cv inputs. Neutron has individual and combined inputs. they slightly differ, so it is better to tune it from an input, which you prefer to use in future. Warm room and preheat recommended.
+
+1 OSCILLATORS
+
+Tune one osc - press FLT_KEYTRAK while holding osc's RANGE.
+Tune both - press FLT_KEYTRAK while holding both RANGE buttons.
+Wide range knob mode can be switched by pressing opposite osc's RANGE while holding RANGE.
+Octaves can be switched independently of knob range.
+CV and knob modulation can be switched off by pressing RANGE while holding PARAPHONIC. It switches automatically with paraphonic mode.
+You can adjust portamento for each osc separately. Just hold RANGE button while turning PORTAMENTO pot to a preferred value. Turning it without RANGE sets the same porta for both oscs. 
+
+Osc edit mode:
+Press PARAPHONIC while holding RANGE to enter that mode.
+press PARAPHONIC to exit.
+Press FLT_KEYTRACK to run auto-tuning and exit from edit mode.
+There are 4 "pages" in this mode, that can be cycled continuously with OSC_SYNC:
+- 1st page is pitch wheel range - edit mode always starts from this page
+you can set semitones from 0 to 12 with LFO_SHAPE knob, osc range leds indicate this number in binary by two bits from bottom to top. Synth remains playable, can be set by ear.
+- 2nd page - octave switch dac scale adjust. This is same as turning v/oct trim on other synths while playing octaves on keyboard, but this time octaves are switched with LFO_SHAPE and conversion coefficient adjusted by pressing OSC1_RANGE (decrease) or OSC2_RANGE (increase).
+- 3rd page - notes dac - same as previous, but for midi-cv pitch dac.
+- 4th page - absolute tune offset. This step must be done only after you happy with both scales, you must tune A440 pitch. Switch the nearest octave with LFO_SHAPE, and tune with OSC_RANGE keys.
+After 4th page, it switches back to 1st. 
+You can run automatic tuning or exit from any page.
+Exit with PARAPHONIC and don't forget to save parameters to flash. 
+
+2 FILTER
+
+Normally tuning not needed, but now you can quench your thirst for perfectionism.
+Filter edit mode = PARAPHONIC holding FILTER_MODE - use it to fine-tune key track scale.
+Same as oscillators, but this time only one page - scale trim.
+Set resonance to the max and disable oscillators by patching unconnected wire to filter input. Set better range with a Cutoff knob.
+
+3 OSC SYNC MENU
+
+hold OSC_SYNC and press...
+- LFO_SYNC to switch envelope restart mode.
+- OSC_RANGE to switch Assign output modes: osc1, osc2, velocity, mod wheel, aftertouch. Lfo leds will indicate mode.
+- FLT_KEYTRACK to enter Assign edit mode - 2 pages - scale and offset.
+This output only 0 to 5V. If oscillator's pitch is higher, octaves will be subtracted until it enters the range.
+
+4 LFO
+
+hold LFO_SYNC and press...
+- OSC_RANGE to switch lfo modes.
+- OSC_SYNC to switch to MIDI sync mode.
+- FILTER_MODE to select sync edge of ext input /, \, or both /\. Falling edge adds 180 degrees to retrig phase.
+
+hold LFO_SYNC and turn...
+- LFO_RATE to manually shift lfo phase from 0 to 360 degrees (To prevent jumps, You must first turn it to previously adjusted value) 
+- LFO_SHAPE to set retrig phase. (This one jumps as soon as you touch knob, but switching it back to shape needs to previously adjusted value)
+
+Although phase can be shifted with LFO_RATE, that is also controlled by appropriate cv input, don't expect to get good phasemod synthesis, since phase setting sampling frequency is limited. 
+
+LFO MODES:
+1 - classic Neutron lfo
+2 - Assign2 SHAPE - switch osc1/breathCC/velo/modwh/afttch. Attenuate with RATE
+3 - Monophonic oscillator, same pitch as OSC2. Use KEY_SYNC to switch LFO_RATE range mode.
+4 - Polyphonic 5 voice.
+5 - Attenuverter that multiplies Rate by Shape. KEY_SYNC switches saturation or overflow mode. 
+Poly mode:
+There are 5 voices, 2 oscillators + amplitude A-R envelope each.
+You can adjust 4 Parameters in total with LFO knobs and button.
+When LFO_SYNC is lit, SHAPE stands for PWM-Detune, and RATE for A and R
+When unlit, SHAPE - osc2 amplitude and RATE - only R.
+
+5 PARAPHONY
+There are Additional paraphony "Pad mode" - gate starts only on the second note, but oscillators keep the last interval after keys releasing. Good for pads with the long release.
+By entering any paraphonic mode, oscillator modulations switched off and switched back on by exiting. Both can be manually switched to any desired state from any mode. 
+
+6 SAVE STATE
+All synth parameters - calibration, octaves, sync... are saved at once. To do this press OSC_SYNC while holding PARAPHONIC. Neutron will blink all leds. On next power on you will get the same state.
+In case something goes wrong there are reset procedure - PARAPHONIC + OSC_SYNC + KEYTRACK = all parameters to default.
+
+I hope you have fun with this firmware, please tell me if you found some bugs or want some features. You can find me on GS or MW forums under "mrf" nick. 
+
+SPECS and facts:
+Sampling frequencies:
+ADC Capturing -  48000 Hz
+OSC SHAPE     -   6000 Hz
+LFO Output    -  48000 Hz
+Portamento    -   3000 Hz
+For now, sources are closed
+Midi synchronization is phase-locked.
+All alias suppressing was done with parabolic transient smoothing.
+All synth related code is written from scratch in SW4STM32 (Eclipse)
+All maths developed in Gnumeric
+LFO classic and mono code is ~3000 lines after preprocessor :-P
+Basic debugging was made in Reaktor, hardcore debugging made on Axoloti (i highly recommend).
+1.5f is the final version of lfo synthesis. Next versions will add USB or other lfo modes, but now i move to other projects, so don't wait.
